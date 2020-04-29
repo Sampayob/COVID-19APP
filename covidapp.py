@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # COVID-19 Web APP
-
-# In[18]:
+# COVID-19 Web APP
 
 import streamlit as st
 import requests
@@ -21,9 +19,7 @@ from keras.layers import LSTM
 from keras.preprocessing.sequence import TimeseriesGenerator
 from sklearn.preprocessing import MinMaxScaler
 
-
-# In[19]:
-
+#### Data ####
 
 url_c = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
 url_d = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv'
@@ -49,15 +45,11 @@ df_c.rename(columns={'Lat':'lat', 'Long':'lon'}, inplace=True)
 df_d.rename(columns={'Lat':'lat', 'Long':'lon'}, inplace=True)
 df_r.rename(columns={'Lat':'lat', 'Long':'lon'}, inplace=True)
 
-
-# In[ ]:
-
-
-# APP
+####### APP #######
 
 st.title(' COVID-19 APP 1.0')
 
-##### Pages ######
+#### App pages ####
 
 st.sidebar.markdown(
 """
@@ -80,8 +72,6 @@ On this sidebar you can **select the type of data** you want to consult (**Globa
 . In the one country data option there is also showed a **time series forecasting based on neural networks (LTSM)**.
 
 **All plots are interactive** allowing zooming, scrolling, **hovering on data** for additional information and **image saving**.
-
-
 
 Source code can be found at [GitHub](https://github.com/Sampayob).
 
@@ -177,7 +167,6 @@ if page == 'Global and country comparison data':
     ### Line chart
     """)
     
-    
     country_list = df_c['Country/Region'].unique().tolist()
     
     country = st.multiselect('Select two or more countries', country_list )
@@ -215,7 +204,6 @@ if page == 'Global and country comparison data':
             df_oc_d = x2[x2.columns[0]].tolist()
             df_oc_r = x3[x3.columns[0]].tolist()
 
-
             #Fixing date format because there is a streamlit axis representation problem if not
 
             dates = x1.reset_index()['index'].tolist()
@@ -250,7 +238,6 @@ if page == 'Global and country comparison data':
 
         st.line_chart(df_multicountry.rename(columns={'date':'index'}).set_index('index'))
 
-
 elif page == 'One country data and predictions':
     #### Country Data ####  
 
@@ -266,8 +253,6 @@ elif page == 'One country data and predictions':
 
     dates_list = df_c.T.reset_index()['index'][4:].tolist()
     date_selected = st.selectbox('Select start date', dates_list )
-
-
     data_oc_select = st.radio('Select data to display', ['All','Confirmed cases', 'Deaths', 'Recovered'])
     
     st.info('To show a **growth factor plot** and a **prediction plot** select the "Confirmed cases", "Deaths" or "Recovered" option.')
@@ -328,7 +313,6 @@ elif page == 'One country data and predictions':
 
     df_oc_final["date"] = pd.to_datetime(df_oc_final['date'],  yearfirst = True)
 
-
     #plot
     st.line_chart(df_oc_final.rename(columns={'date':'index'}).set_index('index'))
 
@@ -339,7 +323,6 @@ elif page == 'One country data and predictions':
     if data_oc_select != 'All':
         st.write(data_oc_select + ' growth factor')
 
-    
     if data_oc_select != 'All':
         
         gf = []
@@ -358,8 +341,6 @@ elif page == 'One country data and predictions':
         df_oc_final_gf[data_oc_select] = gf
              
         st.line_chart(df_oc_final_gf.rename(columns={'date':'index'}).set_index('index'))
-        
-        
         
     ### LTSM Time series forecasting
     
@@ -412,7 +393,6 @@ elif page == 'One country data and predictions':
 
         true_prediction  = scaler.inverse_transform(test_prediction)
 
-
         ## Generating index for prediction df
 
         time_series_array = test.index
@@ -426,7 +406,6 @@ elif page == 'One country data and predictions':
         df_forecast.loc[:,"Predicted"] = true_prediction[:,0]
 
         #plot1
-        
 
         st.write(data_oc_select + ' prediction for next 7 days')
          
@@ -439,12 +418,11 @@ elif page == 'One country data and predictions':
         df_final_ltsm = pd.concat([df1, df2], axis=0)
 
         st.line_chart(df_final_ltsm)
-        
-        
+
         #Accuracy
         MAPE = np.mean(np.abs(np.array(df_forecast["Confirmed"][:5]) - np.array(df_forecast["Predicted"][:5]))/np.array(df_forecast["Confirmed"][:5]))
         
-        st.write("**MAPE **" + str(round((MAPE*100),2)) + " %")
+        st.write("**MAPE **:" + str(round((MAPE*100),2)) + " %")
         st.write("**Model Accuracy**: " + str(round((1-MAPE),2)))
         st.write('*Please take into account that a good amount of data is needed for an accurate prediction. Moreover, the neural network algorithm could be improved*')
       
