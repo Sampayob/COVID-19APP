@@ -5,10 +5,8 @@
 
 # In[18]:
 
-
 import streamlit as st
 import requests
-
 
 import plotly.express as px
 import plotly 
@@ -16,8 +14,6 @@ import plotly
 import pandas as pd
 import numpy as np
 import random
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 from keras.models import Sequential
 from keras.layers import Dense
@@ -109,8 +105,6 @@ if page == 'Global and country comparison data':
     global_info.rename(columns={'NewConfirmed':'New confirmed','TotalConfirmed':'Total confirmed',
                               'NewDeaths':'New deaths','TotalDeaths':'Total deaths',
                                 'NewRecovered':'New recovered','TotalRecovered':'Total recovered'}, inplace=True)
-
-    #st.table(global_info)
     
     ### Top 10 confirmed cases countries ###
     
@@ -141,16 +135,11 @@ if page == 'Global and country comparison data':
         
         st.dataframe(df_global.sort_values(by='Total confirmed', ascending=False))
     
-   
-    
     check_global_bubble = st.checkbox('Show global confirmed cases bubble chart')
-    
     
     if check_global_bubble:
 
         ### Scatterplot ###
-
-
 
         ## Select info ##
 
@@ -242,9 +231,6 @@ if page == 'Global and country comparison data':
                     new_dates_column.append(i[-2:]+'/'+i[0:3]) 
             dates = new_dates_column
 
-            #data_oc = x.reset_index()[x.columns[-1]].tolist()
-
-
             if data_oc_select == 'Confirmed cases':
                 df_oc_c = np.asarray(df_oc_c)
                 df_multicountry[n] = df_oc_c
@@ -259,7 +245,6 @@ if page == 'Global and country comparison data':
                 df_multicountry['date'] = dates
 
             df_multicountry["date"] = pd.to_datetime(df_multicountry['date'],  yearfirst = True)
-            #df_multicountry = df_multicountry.drop(columns=['0'])
 
         #plot
 
@@ -310,14 +295,12 @@ elif page == 'One country data and predictions':
     df_oc_d = x2[x2.columns[0]].tolist()
     df_oc_r = x3[x3.columns[0]].tolist()
 
-
     st.subheader(country)   
     
     if data_oc_select == 'All':
         st.write('Confirmed cases, Deaths and Recovered')
     else: 
         st.write(data_oc_select)
-
 
     #Fixing date format because there is a streamlit axis representation problem if not
 
@@ -334,9 +317,6 @@ elif page == 'One country data and predictions':
             new_dates_column.append(i[-2:]+'/'+i[0:3]) 
     dates = new_dates_column
 
-    #data_oc = x.reset_index()[x.columns[-1]].tolist()
-
-
     if data_oc_select == 'Confirmed cases':
         df_oc_final = pd.DataFrame({'date': dates,data_oc_select: df_oc_c})
     elif data_oc_select == 'Deaths':
@@ -345,8 +325,6 @@ elif page == 'One country data and predictions':
         df_oc_final = pd.DataFrame({'date': dates,data_oc_select: df_oc_r})
     elif data_oc_select == 'All':   
         df_oc_final = pd.DataFrame({'date': dates,'Confirmed cases': df_oc_c, 'Deaths': df_oc_d, 'Recovered': df_oc_r})
-
-    #df_oc_final = pd.DataFrame({'date': dates,df_selected: data_oc})
 
     df_oc_final["date"] = pd.to_datetime(df_oc_final['date'],  yearfirst = True)
 
@@ -384,10 +362,6 @@ elif page == 'One country data and predictions':
         
         
     ### LTSM Time series forecasting
-    
-    #check_ltsm =st.checkbox('Timeseries Forecasting: predictions for the next 7 days')
-    
-    #if check_ltsm:
     
     if data_oc_select != 'All':
 
@@ -473,17 +447,7 @@ elif page == 'One country data and predictions':
         st.write("**MAPE **" + str(round((MAPE*100),2)) + " %")
         st.write("**Model Accuracy**: " + str(round((1-MAPE),2)))
         st.write('*Please take into account that a good amount of data is needed for an accurate prediction. Moreover, the neural network algorithm could be improved*')
-       
-
-
-# In[1]:
-
-
-
-
-
-# In[ ]:
-
+      
 
 
 
