@@ -339,8 +339,12 @@ elif page == 'One country data and predictions':
                     gf.append(number)
     
         df_oc_final_gf[data_oc_select] = gf
+        
+        gf_numeric = round(df_oc_final_gf.tail(1)[data_oc_select].tolist()[0],4)
              
         st.line_chart(df_oc_final_gf.rename(columns={'date':'index'}).set_index('index'))
+        
+        st.write('**Actual growth factor :**'+ ' '+ str(gf_numeric))
         
     ### LTSM Time series forecasting
     
