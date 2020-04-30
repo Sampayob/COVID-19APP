@@ -164,7 +164,6 @@ if page == 'Global and country comparison data':
     """    
     ## Country comparison
     
-    ### Line chart
     """)
     
     country_list = df_c['Country/Region'].unique().tolist()
