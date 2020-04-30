@@ -125,11 +125,11 @@ if page == 'Global and country comparison data':
         
         st.dataframe(df_global.sort_values(by='Total confirmed', ascending=False))
     
-    check_global_bubble = st.checkbox('Show global confirmed cases bubble chart')
+    check_global_bubble = st.checkbox('Show global bubble chart')
     
     if check_global_bubble:
 
-        ### Scatterplot ###
+        ### Bubble chart ###
 
         ## Select info ##
 
