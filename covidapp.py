@@ -427,7 +427,7 @@ elif page == 'One country data and predictions':
         
         st.write("**MAPE **:" + str(round((MAPE*100),2)) + " %")
         st.write("**Model Accuracy**: " + str(round((1-MAPE),2)))
-        st.write('*Please take into account that a good amount of data is needed for an accurate prediction. Moreover, the neural network algorithm could be improved*')
+        st.write('*Please take into account that a good amount of data is needed for an accurate prediction. Moreover, the neural network LTSM model could be improved*')
       
 
 
